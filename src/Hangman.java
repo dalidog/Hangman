@@ -1,3 +1,6 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,10 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class Hangman {
+public class Hangman implements ActionListener{
 	ArrayList<String> words = new ArrayList<String>();
 	Stack s = new Stack();
-
+String wordtosolve;
+String mysteryword;
 	public static void main(String[] args) throws FileNotFoundException {
 		Hangman h = new Hangman();
 		h.getwords();
@@ -56,21 +60,41 @@ public class Hangman {
 	}
 
 	public void makelines() {
-		JFrame frame = new JFrame();
+		 wordtosolve = (String) s.pop();
+		 System.out.println(wordtosolve);
+		mysteryword = "";
+		for (int i = 0; i < ((String) s.pop()).length(); i++) {
+			mysteryword += "_ ";
+		}
+		JFrame frame = new JFrame("HaNgMaN");
 		JPanel panel = new JPanel();
-		JLabel label = new JLabel();
+		JLabel label = new JLabel(mysteryword);
+		label.setFont(new Font("Serif", Font.PLAIN, 50));
 		frame.add(panel);
 		panel.add(label);
 		frame.setVisible(true);
-
-		String wordtosolve = (String) s.pop();
-		String mysteryword = "";
-		for (int i = 0; i < ((String) s.pop()).length(); i++) {
-			mysteryword += "_";
-		}
+		frame.pack();
+		
+		
 	}
 
 	public void changelines() {
 
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String tempString = "";
+		// TODO Auto-generated method stub
+		for (int i = 0; i < wordtosolve.length(); i++) {
+			if(e.getSource().toString().equals(wordtosolve.charAt(i)+"")) {
+				tempString+=wordtosolve.charAt(i)+" ";
+			}
+			else {
+				tempString+=mysteryword.charAt(i*2)+" ";
+			}
+		}
+		mysteryword=tempString;
+		}
+		
 }
