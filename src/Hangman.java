@@ -24,13 +24,14 @@ public class Hangman implements KeyListener {
 	JFrame frame;
 	JPanel panel;
 	JLabel label;
-int lives = 6;
+	int lives = 6;
+
 	public static void main(String[] args) throws FileNotFoundException {
 		Hangman h = new Hangman();
 		h.getwords();
 		h.pushtostack();
 		h.makelines();
-		h.changelines();
+
 	}
 
 	public void getwords() throws FileNotFoundException {
@@ -66,8 +67,9 @@ int lives = 6;
 	}
 
 	public void makelines() {
+
 		wordtosolve = (String) s.pop();
-		System.out.println(wordtosolve);
+
 		mysteryword = "";
 		for (int i = 0; i < wordtosolve.length(); i++) {
 			mysteryword += "_ ";
@@ -81,12 +83,8 @@ int lives = 6;
 		frame.addKeyListener(this);
 		frame.setVisible(true);
 		frame.pack();
-
 	}
 
-	public void changelines() {
-
-	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -100,39 +98,43 @@ int lives = 6;
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
-		if (e.getKeyCode() == 0) {
-
+		//if(s.size() != 0) {
+		if (e.getKeyCode() == 10) {
 			wordtosolve = s.pop();
+
 			mysteryword = "";
 			lives = 6;
 			for (int i = 0; i < wordtosolve.length(); i++) {
 				mysteryword += "_ ";
 			}
 			label.setText(mysteryword);
-			// TODO Auto-generated method stub
+
+			//}
 		}
-		// TODO Auto-generated method stub
-		String tempString = "";
+		else{
+			String tempString = "";
+			for (int i = 0; i < wordtosolve.length(); i++) {
+				if (e.getKeyChar() == (wordtosolve.charAt(i))) {
+					tempString += wordtosolve.charAt(i) + " ";
 
-		// TODO Auto-generated method stub
-		for (int i = 0; i < wordtosolve.length(); i++) {
-			if (e.getKeyChar() == (wordtosolve.charAt(i))) {
-				tempString += wordtosolve.charAt(i) + " ";
+				} else if(e.getKeyChar() != (wordtosolve.charAt(i))){
+					tempString += mysteryword.charAt(i * 2) + " ";
+					if (lives == 0) {
+						JOptionPane.showMessageDialog(null, "YOU SUCKKKKKKKK! You lost");
+					}
+				}
+				if(mysteryword .equals (tempString)) {
+					lives = lives-1;
+				}
 
-			} else {
-				tempString += mysteryword.charAt(i * 2) + " ";
-lives = lives-1;
-if(lives == 0) {
-	JOptionPane.showMessageDialog(null, "YOU SUCKKKKKKKK! You lost");
-}
 			}
+			if(wordtosolve .equals(tempString)){
+				JOptionPane.showMessageDialog(null, "You WINNNNNNNNNN!");
+			}
+			mysteryword = tempString;
+			label.setText(tempString);
+
 		}
-		mysteryword = tempString;
-		label.setText(tempString);
 		
 
-
-	}
-
-}
+	}}
